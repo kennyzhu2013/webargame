@@ -101,6 +101,8 @@
 
     var markerRoot = new THREE.Group
     scene.add(markerRoot)
+
+    //intial: markerRoot.visible = false
     var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
         type : 'pattern',
         patternUrl : THREEx.ArToolkitContext.baseURL + 'data/data/patt.hiro'
@@ -291,15 +293,26 @@
             arWorldRoot.add( audio ); //add to root...
 
             onRenderFcts.push(function(){
-                if( arWorldRoot.visible ==true ){
+                //...TODO: How markerRoot instead of arWorldRoot?..
+                // markerRoot变化比arWorldRoot更及时实时..
+                //TODO:结合方案: markerRoot判断开，arWorldRoot判断关...
+                //if( arWorldRoot.visible ==true ){
+                if( markerRoot.visible ==true ){
                     //console.log(cube)
+                    //console.log("markerRoot:")
+                    //console.log(arWorldRoot)
+                    //console.log(markerRoot.visible)
                     audio.play();
-                }else if (audio.isPlaying){
+                }else if ( arWorldRoot.visible ==false && audio.isPlaying ){
+                    //console.log("arWorldRoot3:")
+                    //console.log(arWorldRoot.visible)
                     audio.pause();
                 }
 
             })
         } );
+        console.log(markerRoot.visible)
+        //console.log(arWorldRoot)
     }
     initAudio()
 
